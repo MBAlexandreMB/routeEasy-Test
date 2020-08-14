@@ -1,30 +1,35 @@
 import * as React from 'react';
 import { FunctionComponent, useState, useEffect } from 'react';
-import { Loader } from 'google-maps';
+import leaflet from './leafletLoader.js';
 import './map.scss';
 
-console.log(process.env);
 
 const Map: FunctionComponent<any> = () => {
   const [map, setMap] = useState(null);
+  const [mapManager, setMapManager] = useState(null);
 
   useEffect(() => {
-    if (!map) {
-      new Loader(process.env.G_API_KEY, {})
-      .load()
+    if (!mapManager) {
+      leaflet
       .then(result => {
-        setMap(new result.maps.Map(
-          document.getElementById('map'), 
-          {
-            center: {lat: -34.397, lng: 150.644},
-            zoom: 8,
-          }
-          )
-        );
+        setMap(result.map('map').setView([51.505, -0.09], 13));
+        setMapManager(result);
       })
       .catch(e => console.log(e));
+    } else {
+      mapManager.tileLayer(
+        `https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}`, 
+        {
+          attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+          maxZoom: 18,
+          id: 'mapbox/streets-v11',
+          tileSize: 512,
+          zoomOffset: -1,
+          accessToken: process.env.M_API_KEY
+        }
+      ).addTo(map);
     }
-  }, [map]);
+  }, [mapManager]);
 
   return (
     <div id="map"></div>
