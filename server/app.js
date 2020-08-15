@@ -44,6 +44,8 @@ app.use(express.static(__dirname + 'public/dist'));
 // -----------------
 
 // Routes
+app.use('/deliveries', require('./routes/deliveries'));
+app.use('/map', require('./routes/map'));
 app.use('/', require('./routes/index'));
 // -----------------
 
