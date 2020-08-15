@@ -56,11 +56,11 @@ const deliveryFactory = () => {
         return;
       }
 
-      if (!delivery.adress ||
-          !delivery.adress.placeId ||
-          !delivery.adress.location ||
-          !(typeof delivery.adress.location.latitude === 'number' &&
-            typeof delivery.adress.location.latitude === 'number')
+      if (!delivery.address ||
+          !delivery.address.placeId ||
+          !delivery.address.location ||
+          !(typeof delivery.address.location.latitude === 'number' &&
+            typeof delivery.address.location.latitude === 'number')
         ) {
         reject({
           message: 'Endereço é obrigatório',
@@ -68,6 +68,8 @@ const deliveryFactory = () => {
         });
         return;
       }
+
+      delivery.address = setAddress(delivery.address);
 
       Delivery.create(delivery)
         .then(result => resolve(result))
@@ -97,12 +99,12 @@ const deliveryFactory = () => {
         return;
       }
 
-      if (delivery.hasOwnProperty('adress') &&
+      if (delivery.hasOwnProperty('address') &&
         (
-          !delivery.adress.placeId ||
-          !delivery.adress.location ||
-          !(typeof delivery.adress.location.latitude === 'number' &&
-            typeof delivery.adress.location.latitude === 'number')
+          !delivery.address.placeId ||
+          !delivery.address.location ||
+          !(typeof delivery.address.location.latitude === 'number' &&
+            typeof delivery.address.location.latitude === 'number')
         )
       ) {
         reject({
@@ -111,6 +113,8 @@ const deliveryFactory = () => {
         });
         return;
       }
+
+      delivery.address = setAddress(delivery.address);
 
       Delivery.findByIdAndUpdate(id, { $set: delivery }, { new: true })
         .then(result => {
@@ -143,6 +147,47 @@ const deliveryFactory = () => {
         }));
     });
   };
+
+  const setAddress = (googleGeocodeAddress) => {
+    const address = {
+      placeId: googleGeocodeAddress.placeId,
+      location: googleGeocodeAddress.location
+    };
+
+    if (googleGeocodeAddress.components.length > 0) {
+      googleGeocodeAddress.components.forEach(component => {
+        component.types.forEach(type => {
+          switch (type) {
+            case 'street_number':
+              address.number = component.long_name;
+              break;
+            case 'route':
+              address.street = component.long_name;
+              break;
+            case 'sublocality_level_1':
+              address.district = component.long_name;
+              break;
+            case 'administrative_area_level_2':
+              address.city = component.long_name;
+              break;
+            case 'administrative_area_level_1':
+              address.state = component.short_name;
+              break;
+            case 'country':
+              address.country = component.long_name;
+              break;
+            case 'subpremise':
+              address.complement = component.long_name;
+              break;
+            default:
+              break;
+          }
+        });
+      });
+    }
+
+    return address;
+  }
 
   return { getAll, getOne, add, edit, remove };
 };
