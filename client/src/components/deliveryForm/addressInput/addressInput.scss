@@ -1,0 +1,39 @@
+.addressinput-container {
+  .input-search-container {
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid black;
+    
+    input, button {
+      margin: 0;
+      outline: none;
+      border: none;
+      background-color: transparent;  
+    }
+
+    input {
+      width: 100%;
+    }
+
+    button {
+      font-size: 0.7rem;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+
+  .location-container {
+    input {
+      margin-top: 40px;
+      text-align: center;
+
+      &.l1 {
+        margin-right: 10px;
+      }
+
+      &.l2 {
+        margin-left: 10px;
+      }
+    }
+  }
+}
