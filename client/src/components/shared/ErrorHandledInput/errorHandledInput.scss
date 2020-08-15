@@ -1,0 +1,9 @@
+@use '../../../pattern';
+
+.input-error-container {
+  margin-bottom: 15px;
+
+  input {
+    margin: 0;
+  }
+}
