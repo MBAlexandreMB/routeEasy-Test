@@ -1,12 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './addressInput.scss';
 
-const AddressInput = ({ value, onChange: locationChange, onSearch }) => {
+const AddressInput = ({ value, error, checkValidity, onSearch }) => {
   const [address, setAddress] = useState(value.address);
 
   const handleChange = (event) => {
-    setAddress(event.target.value);
+    const { value } = event.target;
+
+    checkValidity(value);
+    setAddress(value);
   }
+
+  useEffect(() => {
+    setAddress(value.address);
+  }, [value]);
 
   return (
     <div className="addressinput-container">
@@ -20,8 +27,8 @@ const AddressInput = ({ value, onChange: locationChange, onSearch }) => {
         <button type="button" onClick={() => onSearch(address)}>BUSCAR</button>
       </div>
       {
-        value.error &&
-        <p>{value.error}</p>
+        error &&
+        <p className="error">{error}</p>
       }
 
       <div className="location-container">
