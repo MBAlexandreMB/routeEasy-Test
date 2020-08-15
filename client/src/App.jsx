@@ -11,17 +11,21 @@ const App = () => {
 
   useEffect(() => {
     if (!deliveries) {
-      deliveryService.getAll()
-      .then(result => {
-        setDeliveries(result.data);
-      })
-      .catch(e => console.log(e));
+      updateDeliveries();
     }
   });
 
+  const updateDeliveries = () => {
+    deliveryService.getAll()
+    .then(result => {
+      setDeliveries(result.data);
+    })
+    .catch(e => console.log(e));
+  };
+
   return (
     <div className="app-container">
-      <DeliveryForm />
+      <DeliveryForm onSubmit={updateDeliveries} />
       <div>
         <Map data={deliveries} />
         <DeliveryTable data={deliveries} />

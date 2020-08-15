@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import deliveryService from '../../services/deliveryService';
 import './deliveryForm.scss';
@@ -7,7 +7,8 @@ import { useInput } from '../../hooks/useInput';
 import AddressInput from './addressInput';
 import ErrorHandledInput from '../shared/ErrorHandledInput';
 
-const DeliveryForm = () => {
+const DeliveryForm = ({onSubmit}) => {
+  const [error, setError] = useState(null);
   const {
     value: clientName,
     setValue: setClientName,
@@ -32,7 +33,9 @@ const DeliveryForm = () => {
     bind:bindAddress
   } = useInput({ address: ''}, true);
   
-  const onSubmit = () => {
+  const handleSubmit = () => {
+    setError(null);
+
     const checks = {
       clientName: checkClientName(),
       weightInKg: checkWeigthInKg(),
@@ -61,6 +64,10 @@ const DeliveryForm = () => {
         resetClientName();
         resetWeightInKg();
         setAddress({ address: ''});
+        onSubmit();
+      })
+      .catch((e) => {
+        setError(e);
       });
     }
   }
@@ -99,10 +106,13 @@ const DeliveryForm = () => {
       <ErrorHandledInput type="text" placeholder="Nome do cliente" {...bindClientName} />
       <ErrorHandledInput type="number" placeholder="Peso da entrega" {...bindWeightInKg} />
       <AddressInput onSearch={onSearchAddress} checkValidity={checkAdress} {...bindAddress} />
-
+      {
+        error &&
+        <p className="error">{error}</p>
+      }
       <button
       type="button"
-      onClick={() => onSubmit()}
+      onClick={() => handleSubmit()}
       className="btn btn-success">CADASTRAR CLIENTE</button>
     </form>
    );
