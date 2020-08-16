@@ -26,7 +26,8 @@ const App = () => {
   };
 
   const onSelectTableItem = (item) => {
-    setSelectedMarker(item.address.location);
+    const location = { ...item.address.location }
+    setSelectedMarker(location);
   }
 
   return (
