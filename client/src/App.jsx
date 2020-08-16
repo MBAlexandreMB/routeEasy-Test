@@ -5,6 +5,7 @@ import deliveryService from './services/deliveryService';
 import Map from './components/map';
 import DeliveryForm from "./components/deliveryForm";
 import DeliveryTable from "./components/deliveryTable";
+import DeleteDeliveries from "./components/deleteDeliveries";
 
 const App = () => {
   const [deliveries, setDeliveries] = useState(null);
@@ -25,7 +26,10 @@ const App = () => {
 
   return (
     <div className="app-container">
-      <DeliveryForm onSubmit={updateDeliveries} />
+      <div className="form-delete-container">
+        <DeliveryForm onSubmit={updateDeliveries} />
+        <DeleteDeliveries onDelete={updateDeliveries} />
+      </div>
       <div>
         <Map data={deliveries} />
         <DeliveryTable data={deliveries} />
