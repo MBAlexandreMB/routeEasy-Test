@@ -9,6 +9,7 @@ import DeleteDeliveries from "./components/deleteDeliveries";
 
 const App = () => {
   const [deliveries, setDeliveries] = useState(null);
+  const [selectedMarker, setSelectedMarker] = useState(null);
 
   useEffect(() => {
     if (!deliveries) {
@@ -24,6 +25,10 @@ const App = () => {
     .catch(e => console.log(e));
   };
 
+  const onSelectTableItem = (item) => {
+    setSelectedMarker(item.address.location);
+  }
+
   return (
     <div className="app-container">
       <div className="form-delete-container">
@@ -31,8 +36,8 @@ const App = () => {
         <DeleteDeliveries onDelete={updateDeliveries} />
       </div>
       <div>
-        <Map data={deliveries} />
-        <DeliveryTable data={deliveries} />
+        <Map data={deliveries} selectedMarker={selectedMarker} />
+        <DeliveryTable data={deliveries} onSelectItem={onSelectTableItem} />
       </div>
     </div>
   );

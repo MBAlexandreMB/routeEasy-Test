@@ -3,7 +3,7 @@ import './deliveryTable.scss';
 
 import DeliveryItem from './deliveryItem';
 
-const DeliveryTable = ({data}) => {
+const DeliveryTable = ({data, onSelectItem}) => {
   const [summary, setSummary] = useState({});
 
   useEffect(() => {
@@ -40,7 +40,17 @@ const DeliveryTable = ({data}) => {
             <tbody>
               {
                 data.map((delivery) => {
-                  return <DeliveryItem key={delivery.clientName+delivery.weightInKg} data={delivery} />
+                  const { clientName, weightInKg, address } = delivery;
+                  const { latitude, longitude } = address.location;
+                  const key = `${clientName}+${weightInKg}+${latitude}+${longitude}`;
+
+                  return (
+                  <DeliveryItem
+                  key={key}
+                  data={delivery}
+                  onSelect={onSelectItem}
+                  />
+                  )
                 })
               }
             </tbody>

@@ -3,10 +3,25 @@ import leaflet from './leafletLoader.js';
 import './map.scss';
 
 
-const Map = ({data}) => {
+const Map = ({data, selectedMarker}) => {
   const [map, setMap] = useState(null);
   const [mapManager, setMapManager] = useState(null);
   const [markers, setMarkers] = useState([]);
+
+  useEffect(() => {
+    if (map && selectedMarker) {
+      const marker = markers.find(marker => {
+        return (
+          selectedMarker.latitude === marker._latlng.lat &&
+          selectedMarker.longitude === marker._latlng.lng
+          );
+      });
+
+      const bounds = new mapManager.LatLngBounds();
+      bounds.extend(marker.getLatLng());
+      map.fitBounds(bounds);
+    }
+  }, [selectedMarker, map]);
 
   useEffect(() => {
     if (!mapManager) {

@@ -1,8 +1,9 @@
 import React from 'react';
+import './deliveryItem.scss';
 
-const DeliveryItem = ({data}) => {
+const DeliveryItem = ({data, onSelect}) => {
   return ( 
-    <tr>
+    <tr className="deliveryitem-container" onClick={() => onSelect(data)}>
       <td>{data.clientName}</td>
       <td>{data.address.street}</td>
       <td>{data.address.city}</td>
