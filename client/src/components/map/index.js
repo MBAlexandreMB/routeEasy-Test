@@ -3,16 +3,35 @@ import leaflet from './leafletLoader.js';
 import './map.scss';
 
 
-const Map = ({data}) => {
+const Map = ({data, selectedMarker}) => {
   const [map, setMap] = useState(null);
   const [mapManager, setMapManager] = useState(null);
   const [markers, setMarkers] = useState([]);
 
   useEffect(() => {
+    if (map && selectedMarker) {
+      const marker = markers.find(marker => {
+        return (
+          selectedMarker.latitude === marker._latlng.lat &&
+          selectedMarker.longitude === marker._latlng.lng
+          );
+      });
+
+      if (marker) {
+        const bounds = new mapManager.LatLngBounds();
+        bounds.extend(marker.getLatLng());
+        map.fitBounds(bounds);
+      }
+    }
+  }, [selectedMarker, map]);
+
+  useEffect(() => {
     if (!mapManager) {
       leaflet
       .then(result => {
-        setMap(result.map('map').setView([-23.5967045, -46.6485564], 10));
+        const map = result.map('map');
+        resetView(map);
+        setMap(map);
         setMapManager(result);
       })
       .catch(e => console.log(e));
@@ -32,23 +51,16 @@ const Map = ({data}) => {
   }, [mapManager]);
 
   useEffect(() => {
-    if (data && data.length === 0 && markers.length > 0) {
-      markers.forEach(marker => {
-        marker.remove();
-      });
-      map.setView([-23.5967045, -46.6485564], 10);
-    }
-
-    if (data && data.length > 0) {
+    clearMarkers();
+    
+    if (data && data.length > 0 && mapManager) {
+      const newMarkers = [];
       const bounds = new mapManager.LatLngBounds();
       const options = {
         keyboard: true,
         riseOnHover: true,
-        // icon: new mapManager.divIcon({
-        //   className: 'leaflet-div-icon',
-        //   html: '<span>oi</span>'
-        // }),
       };
+
       data.map(delivery => {
         const { 
           street, number, district,
@@ -56,8 +68,9 @@ const Map = ({data}) => {
           location, complement
         } = delivery.address;
         const { latitude, longitude } = location;
-
         options.title = delivery.clientName;
+
+        // Set marker with informative popup
         const marker = mapManager.marker([latitude, longitude], options)
         .bindPopup(`
         <strong>Cliente:</strong> ${delivery.clientName} 
@@ -78,13 +91,31 @@ const Map = ({data}) => {
         `)
         .addTo(map);
 
-        setMarkers([...markers, marker]);
+        newMarkers.push(marker);
         bounds.extend(marker.getLatLng());
       });
 
+      setMarkers(newMarkers);
       map.fitBounds(bounds);
     }
   }, [mapManager, data])
+
+  const clearMarkers = () => {
+    // If there is no data, but there's markers, delete all markers
+    if (data && data.length === 0 && markers.length > 0) {
+      markers.forEach(marker => {
+        console.log(marker);
+        marker.remove();
+      });
+
+      setMarkers([]);
+      resetView();
+    }
+  };
+  
+  const resetView = (mapInstance = map) => {
+    mapInstance.setView([-23.5967045, -46.6485564], 10);
+  };
 
   return (
     <div id="map"></div>
