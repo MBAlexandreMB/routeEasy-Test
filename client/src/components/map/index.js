@@ -107,6 +107,8 @@ const Map = ({data, selectedMarker}) => {
 
       featureGroup.addTo(map);
       map.fitBounds(bounds);
+    } else {
+      resetView();
     }
   }, [mapManager, data]);
 
@@ -119,7 +121,9 @@ const Map = ({data, selectedMarker}) => {
   };
   
   const resetView = (mapInstance = map) => {
-    mapInstance.setView([-23.5967045, -46.6485564], 10);
+    if(mapInstance) {
+      mapInstance.setView([-23.5967045, -46.6485564], 10);
+    }
   };
 
   return (

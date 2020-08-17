@@ -6,10 +6,13 @@ const deliveryService = () => {
   }
 
   const getAll = () => {
+    console.log('chamou getall');
     return axios.get(`${process.env.BASE_URL}/deliveries/`);
   };
 
   const add = (delivery) => {
+    console.log('chamou add', delivery);
+
     return axios.post(`${process.env.BASE_URL}/deliveries/`, delivery);
   };
 
