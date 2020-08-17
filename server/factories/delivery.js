@@ -15,28 +15,6 @@ const deliveryFactory = () => {
         }));
     });
   };
-
-  const getOne = (id) => {
-    return new Promise((resolve, reject) => {
-      Delivery.findById(id)
-        .then(result => {
-          if (!result.length > 0) {
-            reject({
-              message: "Nenhuma entrega encontrada para o código informado",
-              code: 'DGE02',
-            });
-            return;
-          }
-
-          resolve(result);
-        })
-        .catch(e => reject({
-          message: 'Erro ao tentar encontrar a entrega',
-          code: 'DGE03',
-          error: e,
-        }));
-    });
-  };
   
   const add = (delivery) => {
     return new Promise((resolve, reject) => {
@@ -80,62 +58,7 @@ const deliveryFactory = () => {
         }));
     });
   };
-  
-  const edit = (id, delivery) => {
-    return new Promise((resolve, reject) => {
-      if (delivery.hasOwnProperty('clientName') && !delivery.clientName) {
-        reject({
-          message: 'Nome do cliente é obrigatório',
-          code: 'DUE01',
-        });
-        return;
-      }
-
-      if (delivery.hasOwnProperty('weightInKg') && !delivery.weightInKg) {
-        reject({
-          message: 'Peso em quilos é obrigatório',
-          code: 'DUE02',
-        });
-        return;
-      }
-
-      if (delivery.hasOwnProperty('address') &&
-        (
-          !delivery.address.placeId ||
-          !delivery.address.location ||
-          !(typeof delivery.address.location.latitude === 'number' &&
-            typeof delivery.address.location.latitude === 'number')
-        )
-      ) {
-        reject({
-          message: 'Endereço é obrigatório',
-          code: 'DUE03',
-        });
-        return;
-      }
-
-      delivery.address = setAddress(delivery.address);
-
-      Delivery.findByIdAndUpdate(id, { $set: delivery }, { new: true })
-        .then(result => {
-          if (!result) {
-            reject({
-              message: "Nenhuma entrega encontrada para o código informado",
-              code: 'DUE04',
-            });
-            return;
-          } else {
-            resolve(result);
-          }
-        })
-        .catch(e => reject({
-          message: 'Não foi possível editar a entrega',
-          code: 'DUE05',
-          error: e,
-        }));
-    });
-  };
-  
+    
   const remove = () => {
     return new Promise((resolve, reject) => {
       Delivery.deleteMany()
@@ -201,7 +124,7 @@ const deliveryFactory = () => {
     return address;
   }
 
-  return { getAll, getOne, add, edit, remove, removeOne };
+  return { getAll, add, remove, removeOne };
 };
 
 module.exports = deliveryFactory();

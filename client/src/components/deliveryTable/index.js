@@ -29,37 +29,39 @@ const DeliveryTable = ({data, onSelectItem, onDeleteItem}) => {
               } 
             </p>
           </div>
-          <table cellSpacing="0">
-            <thead>
-              <tr>
-                <th>Nome</th>
-                <th>Rua</th>
-                <th>Cidade</th>
-                <th>País</th>
-                <th>Peso</th>
-                <th>Lat</th>
-                <th>Lng</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                data.map((delivery) => {
-                  const { clientName, weightInKg, address } = delivery;
-                  const { latitude, longitude } = address.location;
-                  const key = `${clientName}+${weightInKg}+${latitude}+${longitude}`;
+          <div className="table-container">
+            <table cellSpacing="0">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Rua</th>
+                  <th>Cidade</th>
+                  <th>País</th>
+                  <th>Peso</th>
+                  <th>Lat</th>
+                  <th>Lng</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  data.map((delivery) => {
+                    const { clientName, weightInKg, address } = delivery;
+                    const { latitude, longitude } = address.location;
+                    const key = `${clientName}+${weightInKg}+${latitude}+${longitude}`;
 
-                  return (
-                  <DeliveryItem
-                  key={key}
-                  data={delivery}
-                  onSelect={onSelectItem}
-                  onDelete={onDeleteItem}
-                  />
-                  )
-                })
-              }
-            </tbody>
-          </table>
+                    return (
+                    <DeliveryItem
+                    key={key}
+                    data={delivery}
+                    onSelect={onSelectItem}
+                    onDelete={onDeleteItem}
+                    />
+                    )
+                  })
+                }
+              </tbody>
+            </table>
+          </div>
           <p className="footnote">*Peso total/Total de clientes</p>
         </div>
         :

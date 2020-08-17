@@ -1,15 +1,12 @@
 @use '../../pattern';
 
 .deliveryform-container {
+  @include pattern.white-box;
   display: flex;
   flex-flow: column nowrap;
 
   margin: 0 30px;
   padding: 30px;
-
-  border: none;
-  border-radius: 8px;
-  box-shadow: 0 0 5px 5px #eee;
 
   button.btn-success {
     margin-top: 15px;

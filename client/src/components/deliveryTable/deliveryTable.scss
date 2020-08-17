@@ -1,3 +1,5 @@
+@use '../../pattern';
+
 .summary-table-container {
 
   .summary, .footnote {
@@ -9,20 +11,24 @@
     display: flex;
   }
 
-  table {
-    width: 50vw;
-    th, td {
-      padding: 8px 15px;
-      overflow: hidden;
-      text-align: center;
-    }
-
-    thead {
-      background-color: #41bc8d;
+  .table-container {
+    width: 100%;
+    overflow-x: auto;
+    table {
+      width: 100%;
+      th, td {
+        padding: 8px 15px;
+        overflow: hidden;
+        text-align: center;
+      }
   
-      th {
-        font-size: 0.8rem;
-        color: white;
+      thead {
+        background-color: pattern.$defaultGreen;
+    
+        th {
+          font-size: 0.8rem;
+          color: white;
+        }
       }
     }
   }

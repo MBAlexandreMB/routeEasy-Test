@@ -33,11 +33,7 @@ app.use(cors({
     'Content-Type',
     'Access-Control-Request-Method',
     'Access-Control-Request-Headers',
-    // 'X-Access-Token',
-    // 'XKey',
-    // 'Authorization'
   ],
-  // credentials: true,
 }));
 
 app.use(express.static(__dirname + 'public/dist'));
@@ -46,7 +42,6 @@ app.use(express.static(__dirname + 'public/dist'));
 // Routes
 app.use('/deliveries', require('./routes/deliveries'));
 app.use('/map', require('./routes/map'));
-app.use('/', require('./routes/index'));
 // -----------------
 
 app.listen(process.env.PORT, () => { console.log('Server listening on port', process.env.PORT) });

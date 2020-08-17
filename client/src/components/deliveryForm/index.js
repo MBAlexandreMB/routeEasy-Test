@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import deliveryService from '../../services/deliveryService';
 import './deliveryForm.scss';
 
@@ -34,8 +33,10 @@ const DeliveryForm = ({onSubmit}) => {
   } = useInput({ address: ''}, true);
   
   const handleSubmit = () => {
+    // Remove any showing errors
     setError(null);
 
+    // Check if all required information were correctly inputed (and show error if not)
     const checks = {
       clientName: checkClientName(),
       weightInKg: checkWeigthInKg(),
@@ -49,6 +50,7 @@ const DeliveryForm = ({onSubmit}) => {
       checkAdress(false, "Endereço deve ser válido. Tente clicar em BUSCAR.");
     }
 
+    // Submit information if all checks passed
     if (
       checks.clientName &&
       checks.weightInKg &&
@@ -61,16 +63,21 @@ const DeliveryForm = ({onSubmit}) => {
         address,
       })
       .then(() => {
-        resetClientName();
-        resetWeightInKg();
-        setAddress({ address: ''});
+        clearForm();
         onSubmit();
       })
       .catch((e) => {
+        // Show a back-end error, if any
         setError(e);
       });
     }
   }
+
+  const clearForm = () => {
+    resetClientName();
+    resetWeightInKg();
+    setAddress({ address: ''});
+  };
 
   const onSearchAddress = (value) => {
     if (value) {
@@ -78,6 +85,7 @@ const DeliveryForm = ({onSubmit}) => {
         .then(result => {
           if (result.data.length > 0) {
             const { formatted_address, geometry, place_id, address_components } = result.data[0];
+            // Set the object as the back-end needs it
             const ret = {
               target: {
                 value: {
@@ -92,12 +100,17 @@ const DeliveryForm = ({onSubmit}) => {
               }
             }
     
+            // Show the formatted_address from Google Geocode on the address input 
             onAddressChange(ret, ret.target.value.address);
           } else {
+            // Force an error to show in the screen
             checkAdress(false, "Endereço não encontrado");
           }
         })
-        .catch(e => console.log(e))
+        .catch(e => {
+          // Show a back-end error, if any
+          setError(e);
+        });
     }
   }
 
