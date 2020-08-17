@@ -22,7 +22,7 @@ $ npm i
 ```
 > Create a .env file on both client and server folders and set these variables:
 #### Client:
-  - BASE_URL= String | The Url to the API RESTFUL server
+  - BASE_URL= String (http://localhost:3000) | The Url without the last '/' to the API RESTFUL server
   - M_API_KEY= String | The MapBox API Key (https://docs.mapbox.com/help/how-mapbox-works/access-tokens/)
   
 #### Server:
