@@ -22,6 +22,13 @@ router.put('/:deliveryId', (req, res) => {
 
 });
 
+router.delete('/:itemId', (req, res) => {
+  delivery.removeOne(req.params.itemId)
+  .then(result => res.status(200).json(result))
+  .catch(e => res.status(400).json(e));
+});
+
+
 router.delete('/', (req, res) => {
   delivery.remove()
   .then(result => res.status(200).json(result))

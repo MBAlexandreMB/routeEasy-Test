@@ -148,6 +148,18 @@ const deliveryFactory = () => {
     });
   };
 
+  const removeOne = (deliveryId) => {
+    return new Promise((resolve, reject) => {
+      Delivery.findByIdAndDelete(deliveryId)
+        .then(result => resolve(result))
+        .catch(e => reject({
+          message: 'Não foi possível excluir a entrega',
+          code: 'DDE02',
+          error: e,
+        }));
+    });
+  };
+
   const setAddress = (googleGeocodeAddress) => {
     const address = {
       placeId: googleGeocodeAddress.placeId,
@@ -189,7 +201,7 @@ const deliveryFactory = () => {
     return address;
   }
 
-  return { getAll, getOne, add, edit, remove };
+  return { getAll, getOne, add, edit, remove, removeOne };
 };
 
 module.exports = deliveryFactory();
