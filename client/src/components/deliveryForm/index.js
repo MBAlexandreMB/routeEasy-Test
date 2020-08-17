@@ -46,7 +46,7 @@ const DeliveryForm = ({onSubmit}) => {
       checks.location.latitude = checkAdress(address.location.latitude);
       checks.location.longitude = checkAdress(address.location.longitude);
     } else {
-      checkAdress(false);
+      checkAdress(false, "Endereço deve ser válido. Tente clicar em BUSCAR.");
     }
 
     if (
