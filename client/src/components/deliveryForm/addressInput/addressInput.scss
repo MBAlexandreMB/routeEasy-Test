@@ -27,7 +27,7 @@
           display: block;
           width: 0;
           height: 1px;
-          background: #41bc8d;
+          background: pattern.$defaultGreen;
           transition: width .7s ease-out;
       }
       
@@ -38,7 +38,7 @@
 
 
     button {
-      background-color: #41bc8d;
+      background-color: pattern.$defaultGreen;
       padding: 5px 10px;
       color: white;
       border-radius: 10px;
