@@ -162,7 +162,7 @@ const deliveryFactory = () => {
               address.number = component.long_name;
               break;
             case 'route':
-              address.street = component.long_name;
+              address.street = component.short_name;
               break;
             case 'sublocality_level_1':
               address.district = component.long_name;
