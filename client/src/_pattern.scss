@@ -1,18 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+html {
+  font-family: 'Poppins', sans-serif;
+}
+
 .btn {
-  padding: 10px 20px;
-  color: white;
   border: none;
+  border-radius: 30px;
   outline: none;
   
+  color: white;
+  font-weight: 600;
+  
+  padding: 10px 70px;
+  margin: 0 auto;
   cursor: pointer;
 }
 
 .btn-success {
-  background-color: green;
+  background-color: #3cbc8d;
 }
 
 .btn-danger {
-  background-color: red;
+  background-color: rgb(228, 78, 78);
 }
 
 .error {

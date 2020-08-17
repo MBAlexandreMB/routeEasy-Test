@@ -19,13 +19,17 @@ const DeliveryTable = ({data, onSelectItem}) => {
     <div>
       { 
         (data && data.length > 0) ?
-        <>
+        <div className="summary-table-container">
           <div className="summary-container">
-            <p>{`Total de Clientes: ${summary.clients};`}</p>
-            <p>{`Peso Total: ${summary.weight}kg;`}</p>
-            <p>{`Ticket Médio*: ${summary.weight / summary.clients};`}</p>
+            <p className="summary">
+              {
+                `Total de Clientes: ${summary.clients} | 
+                Peso Total: ${summary.weight}kg |
+                Ticket Médio*: ${summary.weight / summary.clients}`
+              } 
+            </p>
           </div>
-          <table>
+          <table cellSpacing="0">
             <thead>
               <tr>
                 <th>Nome</th>
@@ -55,7 +59,8 @@ const DeliveryTable = ({data, onSelectItem}) => {
               }
             </tbody>
           </table>
-        </>
+          <p className="footnote">*Peso total/Total de clientes</p>
+        </div>
         :
         <p>Nenhuma entrega cadastrada!</p>
       }

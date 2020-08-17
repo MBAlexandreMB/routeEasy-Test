@@ -18,12 +18,15 @@ const AddressInput = ({ value, error, checkValidity, onSearch }) => {
   return (
     <div className="addressinput-container">
       <div className="input-search-container">
-        <input
-        type="text"
-        placeholder="Endereço do cliente"
-        value={address}
-        onChange={(e) => handleChange(e)}
-        />
+        <div className="input-slider-container">
+          <input
+          type="text"
+          placeholder="Endereço do cliente"
+          value={address}
+          onChange={(e) => handleChange(e)}
+          />
+          <span className="slider" />
+        </div>
         <button type="button" onClick={() => onSearch(address)}>BUSCAR</button>
       </div>
       {
