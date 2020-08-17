@@ -29,6 +29,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "dotenv-webpack": "^2.0.0",
+    "file-loader": "^6.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "scriptjs": "^2.5.9"

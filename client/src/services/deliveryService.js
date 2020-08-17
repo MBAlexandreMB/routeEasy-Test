@@ -24,10 +24,15 @@ const deliveryService = () => {
   const remove = () => {
     return axios.delete(`${process.env.BASE_URL}/deliveries/`);
   };
+
+  const removeOne = (itemId) => {
+    return axios.delete(`${process.env.BASE_URL}/deliveries/${itemId}`);
+  };
   
   return {
     getAll, getOne, add,
-    edit, remove, getGeocode
+    edit, remove, removeOne,
+    getGeocode
   };
 };
 
