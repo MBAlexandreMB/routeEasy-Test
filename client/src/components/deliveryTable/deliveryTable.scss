@@ -1,0 +1,29 @@
+.summary-table-container {
+
+  .summary, .footnote {
+    color: #777;
+    font-size: .75rem;
+  }
+
+  .summary-container {
+    display: flex;
+  }
+
+  table {
+    width: 50vw;
+    th, td {
+      padding: 8px 15px;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    thead {
+      background-color: #41bc8d;
+  
+      th {
+        font-size: 0.8rem;
+        color: white;
+      }
+    }
+  }
+}

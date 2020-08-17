@@ -1,0 +1,15 @@
+.app-container {
+  padding: 30px 20px;
+  width: 100vw;
+  max-width: 100%;
+
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+
+  .form-delete-container {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+  }
+}

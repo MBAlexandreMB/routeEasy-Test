@@ -1,0 +1,33 @@
+@use '../../../pattern';
+
+.input-error-container {
+  margin-bottom: 15px;
+
+  .input-slider-container {
+    box-sizing: border-box;
+    width: 100%;
+
+    input {
+      width: 100%;
+      background-color: transparent;
+      border: none;
+      border-bottom: 1px solid #ccc;
+      outline: none;
+    }
+      
+    .slider::after {
+      position: relative;
+      top: -3px;
+      content: '';
+      display: block;
+      width: 0;
+      height: 1px;
+      background: #41bc8d;
+      transition: width .7s ease-out;
+    }
+    
+    input:focus ~ .slider::after {
+      width: 102%;
+    }
+  }
+}
