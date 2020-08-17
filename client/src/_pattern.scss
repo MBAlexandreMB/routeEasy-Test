@@ -1,7 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
-html {
+$defaultGreen: #3cbc8d;
+$defaultRed: #e44e4e;
+
+html, body {
   font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
 .btn {
@@ -18,15 +23,27 @@ html {
 }
 
 .btn-success {
-  background-color: #3cbc8d;
+  background-color: $defaultGreen;
 }
 
 .btn-danger {
-  background-color: rgb(228, 78, 78);
+  background-color: $defaultRed;
 }
 
 .error {
-  color: red;
+  color: $defaultRed;
   font-size: .8rem;
   margin: 5px 0 0;
+}
+
+@mixin white-box {
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 0 5px 5px #eee;
+}
+
+@media (max-width: 1061px) {
+  .btn {
+    font-size: 0.7rem;
+  }
 }

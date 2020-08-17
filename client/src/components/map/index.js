@@ -4,38 +4,40 @@ import './map.scss';
 
 
 const Map = ({data, selectedMarker}) => {
-  const [map, setMap] = useState(null);
-  const [mapManager, setMapManager] = useState(null);
-  const [markers, setMarkers] = useState([]);
-  const [fGroup, setFGroup] = useState(null);
+  const [map, setMap] = useState(null); // Map instance
+  const [mapManager, setMapManager] = useState(null); // Leaflet instance
+  const [markers, setMarkers] = useState([]); // Individual reference for markers
+  const [fGroup, setFGroup] = useState(null); // Grouped reference for markers
 
-    // Load Leaflet
-    useEffect(() => {
-      if (!mapManager) {
-        leaflet
-        .then(result => {
-          const map = result.map('map');
-          resetView(map);
-          setMap(map);
-          setMapManager(result);
-        })
-        .catch(e => console.log(e));
-      } else {
-        mapManager.tileLayer(
-          `https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}`, 
-          {
-            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-            maxZoom: 18,
-            id: 'mapbox/streets-v11',
-            tileSize: 512,
-            zoomOffset: -1,
-            accessToken: process.env.M_API_KEY
-          }
-        ).addTo(map);
-      }
-    }, [mapManager]);
+  useEffect(() => {
+    if (!mapManager) {
+      // Load Leaflet
+      leaflet
+      .then(result => {
+        const map = result.map('map');
+        resetView(map);
+        setMap(map);
+        setMapManager(result);
+      })
+      .catch(e => console.log(e));
+    } else {
+      // Load Mapbox tiles
+      mapManager.tileLayer(
+        `https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}`, 
+        {
+          attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+          maxZoom: 18,
+          minZoom: 1,
+          id: 'mapbox/streets-v11',
+          tileSize: 512,
+          zoomOffset: -1,
+          accessToken: process.env.M_API_KEY
+        }
+      ).addTo(map);
+    }
+  }, [mapManager]);
   
-  // Fit view to marker
+  // Fit view to selected marker, if any
   useEffect(() => {
     if (map && selectedMarker) {
       const marker = markers.find(marker => {
@@ -105,6 +107,8 @@ const Map = ({data, selectedMarker}) => {
 
       featureGroup.addTo(map);
       map.fitBounds(bounds);
+    } else {
+      resetView();
     }
   }, [mapManager, data]);
 
@@ -117,7 +121,9 @@ const Map = ({data, selectedMarker}) => {
   };
   
   const resetView = (mapInstance = map) => {
-    mapInstance.setView([-23.5967045, -46.6485564], 10);
+    if(mapInstance) {
+      mapInstance.setView([-23.5967045, -46.6485564], 10);
+    }
   };
 
   return (

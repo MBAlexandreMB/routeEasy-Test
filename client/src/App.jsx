@@ -44,7 +44,7 @@ const App = () => {
         <DeliveryForm onSubmit={updateDeliveries} />
         <DeleteDeliveries onDelete={updateDeliveries} />
       </div>
-      <div>
+      <div className="map-table-container">
         <Map data={deliveries} selectedMarker={selectedMarker} />
         <DeliveryTable
         data={deliveries}

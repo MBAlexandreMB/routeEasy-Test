@@ -13,15 +13,6 @@ router.post('/', (req, res) => {
     .catch(e => res.status(400).json(e));
 });
 
-router.put('/:deliveryId', (req, res) => {
-  const { params, body } = req;
-
-  delivery.edit(params.deliveryId, body)
-    .then(result => res.status(200).json(result))
-    .catch(e => res.status(400).json(e));
-
-});
-
 router.delete('/:itemId', (req, res) => {
   delivery.removeOne(req.params.itemId)
   .then(result => res.status(200).json(result))
