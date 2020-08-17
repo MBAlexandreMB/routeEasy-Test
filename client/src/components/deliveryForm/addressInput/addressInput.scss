@@ -44,23 +44,21 @@
       border-radius: 10px;
       font-weight: 600;
 
+      margin-left: 10px;
       font-size: 0.7rem;
       cursor: pointer;
     }
   }
 
   .location-container {
+    margin-top: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    
     input {
-      margin-top: 40px;
+      width: 45%;
       text-align: center;
-
-      &.l1 {
-        margin-right: 10px;
-      }
-
-      &.l2 {
-        margin-left: 10px;
-      }
     }
   }
 }

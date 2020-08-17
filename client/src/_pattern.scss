@@ -3,8 +3,10 @@
 $defaultGreen: #3cbc8d;
 $defaultRed: #e44e4e;
 
-html {
+html, body {
   font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
 .btn {
@@ -38,4 +40,10 @@ html {
   border: none;
   border-radius: 8px;
   box-shadow: 0 0 5px 5px #eee;
+}
+
+@media (max-width: 1061px) {
+  .btn {
+    font-size: 0.7rem;
+  }
 }
