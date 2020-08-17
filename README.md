@@ -32,19 +32,10 @@ Server:
 
 
 ### RUN
-> You can run as different servers with npm
+> Run server and client as different servers with npm
 ```shell
 // At the server folder
 $ npm start
-
-// Then at the client folder
-$ npm start
-```
-
-> Or you can build it, to run as just one server
-```shell
-// At the client folder
-$ npm build
 
 // Then at the client folder
 $ npm start
