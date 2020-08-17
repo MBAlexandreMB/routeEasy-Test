@@ -3,7 +3,7 @@ import './deliveryTable.scss';
 
 import DeliveryItem from './deliveryItem';
 
-const DeliveryTable = ({data, onSelectItem}) => {
+const DeliveryTable = ({data, onSelectItem, onDeleteItem}) => {
   const [summary, setSummary] = useState({});
 
   useEffect(() => {
@@ -53,6 +53,7 @@ const DeliveryTable = ({data, onSelectItem}) => {
                   key={key}
                   data={delivery}
                   onSelect={onSelectItem}
+                  onDelete={onDeleteItem}
                   />
                   )
                 })

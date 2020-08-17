@@ -52,8 +52,11 @@ const Map = ({data, selectedMarker}) => {
 
   useEffect(() => {
     clearMarkers();
-    
+  }, [data, markers]);
+
+  useEffect(() => {
     if (data && data.length > 0 && mapManager) {
+      console.log('TEM DATA AINDA', data);
       const newMarkers = [];
       const bounds = new mapManager.LatLngBounds();
       const options = {
@@ -97,19 +100,19 @@ const Map = ({data, selectedMarker}) => {
 
       setMarkers(newMarkers);
       map.fitBounds(bounds);
+      console.log('--->', markers);
     }
   }, [mapManager, data])
 
   const clearMarkers = () => {
-    // If there is no data, but there's markers, delete all markers
-    if (data && data.length === 0 && markers.length > 0) {
+    // If there is less data than markers, check for which markers to remove
+    if (data && data.length < markers.length) {
       markers.forEach(marker => {
         console.log(marker);
         marker.remove();
       });
 
       setMarkers([]);
-      resetView();
     }
   };
   
