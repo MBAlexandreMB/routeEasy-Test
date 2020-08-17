@@ -7,7 +7,35 @@ const Map = ({data, selectedMarker}) => {
   const [map, setMap] = useState(null);
   const [mapManager, setMapManager] = useState(null);
   const [markers, setMarkers] = useState([]);
+  const [fGroup, setFGroup] = useState(null);
 
+    // Load Leaflet
+    useEffect(() => {
+      if (!mapManager) {
+        leaflet
+        .then(result => {
+          const map = result.map('map');
+          resetView(map);
+          setMap(map);
+          setMapManager(result);
+        })
+        .catch(e => console.log(e));
+      } else {
+        mapManager.tileLayer(
+          `https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}`, 
+          {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            maxZoom: 18,
+            id: 'mapbox/streets-v11',
+            tileSize: 512,
+            zoomOffset: -1,
+            accessToken: process.env.M_API_KEY
+          }
+        ).addTo(map);
+      }
+    }, [mapManager]);
+  
+  // Fit view to marker
   useEffect(() => {
     if (map && selectedMarker) {
       const marker = markers.find(marker => {
@@ -25,34 +53,10 @@ const Map = ({data, selectedMarker}) => {
     }
   }, [selectedMarker, map]);
 
-  useEffect(() => {
-    if (!mapManager) {
-      leaflet
-      .then(result => {
-        const map = result.map('map');
-        resetView(map);
-        setMap(map);
-        setMapManager(result);
-      })
-      .catch(e => console.log(e));
-    } else {
-      mapManager.tileLayer(
-        `https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}`, 
-        {
-          attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-          maxZoom: 18,
-          id: 'mapbox/streets-v11',
-          tileSize: 512,
-          zoomOffset: -1,
-          accessToken: process.env.M_API_KEY
-        }
-      ).addTo(map);
-    }
-  }, [mapManager]);
-
+  // Add markers if there's data
   useEffect(() => {
     clearMarkers();
-    
+
     if (data && data.length > 0 && mapManager) {
       const newMarkers = [];
       const bounds = new mapManager.LatLngBounds();
@@ -88,28 +92,27 @@ const Map = ({data, selectedMarker}) => {
         ${state ? state : ''} 
         ${(city && country || state && country) ? ' - ' : ''} 
         ${country ? country : ''}
-        `)
-        .addTo(map);
+        `);
 
         newMarkers.push(marker);
         bounds.extend(marker.getLatLng());
       });
 
+      const featureGroup = mapManager.featureGroup(newMarkers);
+
       setMarkers(newMarkers);
+      setFGroup(featureGroup);
+
+      featureGroup.addTo(map);
       map.fitBounds(bounds);
     }
-  }, [mapManager, data])
+  }, [mapManager, data]);
 
   const clearMarkers = () => {
-    // If there is no data, but there's markers, delete all markers
-    if (data && data.length === 0 && markers.length > 0) {
-      markers.forEach(marker => {
-        console.log(marker);
-        marker.remove();
-      });
-
+    if (fGroup) {
+      fGroup.clearLayers();
       setMarkers([]);
-      resetView();
+      setFGroup(null);
     }
   };
   

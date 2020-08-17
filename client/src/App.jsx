@@ -30,6 +30,14 @@ const App = () => {
     setSelectedMarker(location);
   }
 
+  const onDeleteTableItem = (itemId) => {
+    deliveryService.removeOne(itemId)
+      .then(() => {
+        updateDeliveries();
+      })
+      .catch(e => console.log(e));
+  }
+
   return (
     <div className="app-container">
       <div className="form-delete-container">
@@ -38,7 +46,11 @@ const App = () => {
       </div>
       <div>
         <Map data={deliveries} selectedMarker={selectedMarker} />
-        <DeliveryTable data={deliveries} onSelectItem={onSelectTableItem} />
+        <DeliveryTable
+        data={deliveries}
+        onSelectItem={onSelectTableItem}
+        onDeleteItem={onDeleteTableItem}
+        />
       </div>
     </div>
   );
